@@ -1,11 +1,17 @@
+from math import sqrt
 import pygame as pg
 
 from constants import consts as c
+from enemy import Enemy
 from player import Player
+from utils import *
 
 
 def game_loop():
     player = Player()
+    enemies = [Enemy(200, 200, "plankton")]
+    sugar_molecules = []
+    c.set_player(player)
 
     running = True
 
@@ -29,10 +35,32 @@ def game_loop():
         player.move(cursor_states)
 
         player.update()
+        for enemy in enemies:
+            enemy.update()
+
+        enemy_collisions = check_collisions(player, enemies)
+        for index, collision in enumerate(enemy_collisions):
+            if collision:
+                if enemies[index].health < player.health:
+                    sugar_molecules += sugar_spawner(enemies[index])
+                    enemies[index].is_alive = False
+
+        sugar_collisions = check_collisions(player, sugar_molecules)
+        for index, collision in enumerate(sugar_collisions):
+            if collision:
+                player.sugar += 1
+                sugar_molecules[index].picked_up = True
+
+        enemies = [enemy for enemy in enemies if enemy.is_alive]
+        sugar_molecules = [sugar for sugar in sugar_molecules if not sugar.picked_up]
 
         c.screen.fill(c.bg_color)
 
         player.render()
+        for sugar in sugar_molecules:
+            sugar.render()
+        for enemy in enemies:
+            enemy.render()
 
         pg.display.flip()
 
