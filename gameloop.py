@@ -1,17 +1,42 @@
 from math import sqrt
+from os import path
 import pygame as pg
 
 from constants import consts as c
 from enemy import Enemy
 from player import Player
+from progress_bar import ProgressBar
+from text import Text
 from utils import *
 
 
 def game_loop():
     player = Player()
-    enemies = [Enemy(200, 200, "plankton")]
+    
+    enemies = []
+    for _ in range(30):
+        enemy_x = 2 * c.s_width * (random() - 0.5)
+        enemy_y = 2 * c.s_height * (random() - 0.5)
+        enemy_type = "plankton"
+        enemies.append(Enemy(enemy_x, enemy_y, enemy_type))
+
     sugar_molecules = []
     c.set_player(player)
+
+    health_text = Text(c.s_width // 4, c.stats_font_size // 2, f"Membrane", c.screen)
+    health_text.set_font(pg.font.Font(path.join(path.dirname(__file__), "assets", "orbitron.ttf"), c.stats_font_size))
+
+    atp_text = Text(3 * c.s_width // 4, c.stats_font_size // 2, f"ATP", c.screen)
+    atp_text.set_font(pg.font.Font(path.join(path.dirname(__file__), "assets", "orbitron.ttf"), c.stats_font_size))
+
+    sugar_text = Text(c.s_width // 2, c.s_height - c.stats_font_size, f"Sugar: {player.sugar}", c.screen)
+    sugar_text.set_font(pg.font.Font(path.join(path.dirname(__file__), "assets", "orbitron.ttf"), c.stats_font_size))
+
+    health_progress_bar = ProgressBar(c.s_width // 4, 2 * c.stats_font_size, c.s_width // 6, c.stats_font_size // 2, c.screen)
+    atp_progress_bar = ProgressBar(3 * c.s_width // 4, 2 * c.stats_font_size, c.s_width // 6, c.stats_font_size // 2, c.screen)
+
+    lightning_image = pg.image.load(path.join(path.dirname(__file__), "assets", "icons", "lightning_bolt.png"))
+    lightning_image = pg.transform.scale(lightning_image, (100, 100))
 
     running = True
 
@@ -24,6 +49,8 @@ def game_loop():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     running = False
+                if event.key == pg.K_q:
+                    player.respire()
 
         keys_pressed = pg.key.get_pressed()
         cursor_states = {
@@ -34,14 +61,17 @@ def game_loop():
         }
         player.move(cursor_states)
 
+        # update entities
         player.update()
         for enemy in enemies:
             enemy.update()
 
+        # check for collisions
         enemy_collisions = check_collisions(player, enemies)
         for index, collision in enumerate(enemy_collisions):
             if collision:
                 if enemies[index].health < player.health:
+                    player.health -= enemies[index].health
                     sugar_molecules += sugar_spawner(enemies[index])
                     enemies[index].is_alive = False
 
@@ -51,19 +81,39 @@ def game_loop():
                 player.sugar += 1
                 sugar_molecules[index].picked_up = True
 
+        # remove dead enemies and picked up sugars
         enemies = [enemy for enemy in enemies if enemy.is_alive]
         sugar_molecules = [sugar for sugar in sugar_molecules if not sugar.picked_up]
 
+        # update UI elements
+        health_text.set_text(f"Membrane: {player.health}/{int(player.max_health)}")
+        atp_text.set_text(f"ATP: {round(player.atp, 1)}/{int(player.max_atp)}")
+        sugar_text.set_text(f"Sugar: {round(player.sugar, 1)} (1 sugar -> {c.sugar_to_atp} ATP)")
+        health_progress_bar.set_progress(player.health / player.max_health)
+        atp_progress_bar.set_progress(player.atp / player.max_atp)
+
         c.screen.fill(c.bg_color)
 
+        # render entities
         player.render()
         for sugar in sugar_molecules:
             sugar.render()
         for enemy in enemies:
             enemy.render()
+        
+        # render UI elements
+        health_text.render()
+        atp_text.render()
+        sugar_text.render()
+        health_progress_bar.render()
+        atp_progress_bar.render()
+
+        # render status effects
+        if player.respired:
+            c.screen.blit(lightning_image, (c.s_width // 2 - 50, c.s_height // 2 - 50))
+            player.respired = False
 
         pg.display.flip()
-
         c.update_dt()
 
 

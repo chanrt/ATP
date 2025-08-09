@@ -1,4 +1,4 @@
-from math import sqrt
+from math import ceil, sqrt
 from random import random
 
 from constants import consts as c
@@ -28,7 +28,7 @@ def transform_coords(x, y):
 def sugar_spawner(enemy):
     spawned_sugars = []
 
-    for _ in range(enemy.spawned_sugars):
+    for _ in range(ceil(c.sugar_multiplier * enemy.spawned_sugars)):
         x = enemy.x - enemy.radius + 2 * enemy.radius * random()
         y = enemy.y - enemy.radius + 2 * enemy.radius * random()
         new_sugar = Sugar(x, y)
