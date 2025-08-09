@@ -7,3 +7,7 @@ mitochondria icon: https://www.flaticon.com/free-icon/mitochondria_4799064
 photosynthesis icon: https://www.flaticon.com/free-icon/sun-energy_931848
 
 chemotaxis icon: https://www.flaticon.com/free-icon/chemical-sensor_11298781
+
+antibody icon: https://www.flaticon.com/free-icon/antibody_5219034
+
+molecule icon: https://www.flaticon.com/free-icon/molecule_109875

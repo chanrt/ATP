@@ -5,6 +5,7 @@ class Constants:
     def __init__(self):
         self.fps = 30
         self.dt = 1.0 / self.fps
+        self.time_stop = False
 
         self.init_colors()
 
@@ -21,11 +22,15 @@ class Constants:
         # parameters subject to upgrades
         self.player_max_health = 100
         self.player_max_v = 100
+        self.sugar_to_health = 10
         self.sugar_to_atp = 5
         self.sugar_synthesis_rate = 0
         self.atp_req_multiplier = 1.0
         self.sugar_multiplier = 1.0
         self.respawn = 0
+        self.chemotaxis = 0
+        self.antibody = 0
+        self.contact_damage_multiplier = 1.0
 
         self.plankton_health = 20
         self.plankton_sugar = 5
@@ -59,6 +64,11 @@ class Constants:
         self.player = player
 
     def update_dt(self):
+        if self.time_stop:
+            self.time_stop = False
+            self.dt = 0
+            return
+
         actual_fps = self.clock.get_fps()
         if actual_fps == 0:
             self.dt = 1.0 / self.fps

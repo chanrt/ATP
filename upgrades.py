@@ -77,7 +77,10 @@ class UpgradeManager:
         upgrades = self.get_random_upgrades()
         upgrade_x = linspace(0, c.s_width, len(upgrades) + 2)[1:-1]
 
-        self.text_elements = []
+        title_text = Text(c.s_width // 2, c.s_height // 8, f"Level {c.player.level}", c.screen)
+        title_text.set_font(pg.font.Font(path.join(path.dirname(__file__), "assets", "orbitron.ttf"), c.title_font_size))
+
+        self.text_elements = [title_text]
         self.icons = []
         self.icon_rects = []
         self.buttons = []
@@ -116,7 +119,7 @@ class UpgradeManager:
 
     def load_possible_upgrades(self):
         self.possible_upgrades = [
-            # health upgrades
+            # max health upgrades
             {
                 "name": "Plasma Membrane I",
                 "icon": "plasma_membrane.png",
@@ -165,84 +168,151 @@ class UpgradeManager:
                     "upgrade": "Plasma Membrane IV"
                 }
             },
+            # heal upgrades
+            {
+                "name": "Anabolism I",
+                "icon": "anabolism.png",
+                "description": "Increases health gain from sugar",
+                "effect": [1.0, 1.2],
+                "target": "sugar_to_health",
+                "pre_req": None
+            },
+            {
+                "name": "Anabolism II",
+                "icon": "anabolism.png",
+                "description": "Increases health gain from sugar",
+                "effect": [1.0, 1.2],
+                "target": "sugar_to_health",
+                "pre_req": {
+                    "upgrade": "Anabolism I"
+                }
+            },
+            {
+                "name": "Anabolism III",
+                "icon": "anabolism.png",
+                "description": "Increases health gain from sugar",
+                "effect": [1.0, 1.2],
+                "target": "sugar_to_health",
+                "pre_req": {
+                    "upgrade": "Anabolism II"
+                }
+            },
+            {
+                "name": "Anabolism IV",
+                "icon": "anabolism.png",
+                "description": "Increases health gain from sugar",
+                "effect": [1.0, 1.2],
+                "target": "sugar_to_health",
+                "pre_req": {
+                    "upgrade": "Anabolism III"
+                }
+            },
+            {
+                "name": "Anabolism V",
+                "icon": "anabolism.png",
+                "description": "Increases health gain from sugar",
+                "effect": [1.0, 1.2],
+                "target": "sugar_to_health",
+                "pre_req": {
+                    "upgrade": "Anabolism IV"
+                }
+            },
             # energy yield upgrades
+            # {
+            #     "name": "Krebs' Cycle",
+            #     "icon": "mitochondria.png",
+            #     "description": "Increases ATP yield from sugar",
+            #     "effect": [1.0, 2.0],
+            #     "target": "sugar_to_atp",
+            #     "pre_req": None
+            # },
+            # {
+            #     "name": "Photosynthesis",
+            #     "icon": "photosynthesis.png",
+            #     "description": "Passively synthesize sugar",
+            #     "effect": [0, 0.2],
+            #     "target": "sugar_synthesis_rate",
+            #     "pre_req": {
+            #         "level": 5
+            #     }
+            # },
+            # # movement upgrades
+            # {
+            #     "name": "Cilia",
+            #     "icon": "cilia.png",
+            #     "description": "Increases max speed",
+            #     "effect": [1.0, 1.5],
+            #     "target": "player_max_v",
+            #     "pre_req": None
+            # },
+            # # combat upgrade
             {
-                "name": "Krebs' Cycle",
-                "icon": "mitochondria.png",
-                "description": "Increases ATP yield from sugar",
-                "effect": [1.0, 2.0],
-                "target": "sugar_to_atp",
+                "name": "Antibody",
+                "icon": "antibody.png",
+                "description": "Hit enemies from a distance",
+                "effect": [0, 1],
+                "target": "antibody",
                 "pre_req": None
             },
-            {
-                "name": "Photosynthesis",
-                "icon": "photosynthesis.png",
-                "description": "Passively synthesize sugar",
-                "effect": [0, 0.2],
-                "target": "sugar_synthesis_rate",
-                "pre_req": {
-                    "level": 5
-                }
-            },
-            # movement upgrades
-            {
-                "name": "Cilia",
-                "icon": "cilia.png",
-                "description": "Increases max speed",
-                "effect": [1.0, 1.5],
-                "target": "player_max_v",
-                "pre_req": None
-            },
+            # defense upgrade
+            # {
+            #     "name": "Cytoskeleton",
+            #     "icon": "cytoskeleton.png",
+            #     "description": "Reduce damage taken from contact",
+            #     "effect": [1.0, 0.5],
+            #     "target": "contact_damage_multiplier",
+            #     "pre_req": None
+            # },
             # faster level-up upgrades
-            {
-                "name": "DNA Polymerase",
-                "icon": "dna_polymerase.png",
-                "description": "Less ATP required for replication",
-                "effect": [1.0, 0.75],
-                "target": "atp_req_multiplier",
-                "pre_req": None
-            },
-            {
-                "name": "Centrosome",
-                "icon": "anaphase.png",
-                "description": "Less ATP required for replication",
-                "effect": [0.75, 0.5],
-                "target": "atp_req_multiplier",
-                "pre_req": {
-                    "upgrade": "DNA Polymerase"
-                }
-            },
-            # increase pick-up upgrades
-            {
-                "name": "Endocytosis",
-                "icon": "endocytosis.png",
-                "description": "Increased sugar pick-up",
-                "effect": [1.0, 2.0],
-                "target": "sugar_multiplier",
-                "pre_req": None
-            },
-            # sensing upgrade
-            {
-                "name": "Chemotaxis",
-                "icon": "chemotaxis.png",
-                "description": "Enemy directions are shown",
-                "effect": [0, 1],
-                "target": "chemotaxis",
-                "pre_req": {
-                    "level": 5
-                }
-            },
-            # respawn upgrade
-            {
-                "name": "Plasmid",
-                "icon": "plasmid.png",
-                "description": "Respawn (once) after death",
-                "effect": [0, 1],
-                "target": "respawn",
-                "pre_req": {
-                    "level": 10
-                }
-            }
+            # {
+            #     "name": "DNA Polymerase",
+            #     "icon": "dna_polymerase.png",
+            #     "description": "Less ATP required for replication",
+            #     "effect": [1.0, 0.75],
+            #     "target": "atp_req_multiplier",
+            #     "pre_req": None
+            # },
+            # {
+            #     "name": "Centrosome",
+            #     "icon": "anaphase.png",
+            #     "description": "Less ATP required for replication",
+            #     "effect": [0.75, 0.5],
+            #     "target": "atp_req_multiplier",
+            #     "pre_req": {
+            #         "upgrade": "DNA Polymerase"
+            #     }
+            # },
+            # # increase pick-up upgrades
+            # {
+            #     "name": "Endocytosis",
+            #     "icon": "endocytosis.png",
+            #     "description": "Increased sugar pick-up",
+            #     "effect": [1.0, 2.0],
+            #     "target": "sugar_multiplier",
+            #     "pre_req": None
+            # },
+            # # sensing upgrade
+            # {
+            #     "name": "Chemotaxis",
+            #     "icon": "chemotaxis.png",
+            #     "description": "Enemy directions are shown",
+            #     "effect": [0, 1],
+            #     "target": "chemotaxis",
+            #     "pre_req": {
+            #         "level": 0
+            #     }
+            # },
+            # # respawn upgrade
+            # {
+            #     "name": "Plasmid",
+            #     "icon": "plasmid.png",
+            #     "description": "Respawn (once) after death",
+            #     "effect": [0, 1],
+            #     "target": "respawn",
+            #     "pre_req": {
+            #         "level": 0
+            #     }
+            # },
         ]
 
 

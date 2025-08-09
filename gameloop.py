@@ -51,6 +51,10 @@ def game_loop():
                     running = False
                 if event.key == pg.K_q:
                     player.respire()
+                if event.key == pg.K_e:
+                    player.heal()
+                if event.key == pg.K_SPACE:
+                    player.exhaust_sugar()
 
         keys_pressed = pg.key.get_pressed()
         cursor_states = {
@@ -62,7 +66,7 @@ def game_loop():
         player.move(cursor_states)
 
         # update entities
-        player.update()
+        player.update(enemies)
         for enemy in enemies:
             enemy.update()
 
@@ -71,9 +75,11 @@ def game_loop():
         for index, collision in enumerate(enemy_collisions):
             if collision:
                 if enemies[index].health < player.health:
-                    player.health -= enemies[index].health
+                    player.health -= enemies[index].health * c.contact_damage_multiplier
                     sugar_molecules += sugar_spawner(enemies[index])
                     enemies[index].is_alive = False
+                else:
+                    player.kill()
 
         sugar_collisions = check_collisions(player, sugar_molecules)
         for index, collision in enumerate(sugar_collisions):
@@ -88,7 +94,7 @@ def game_loop():
         # update UI elements
         health_text.set_text(f"Membrane: {player.health}/{int(player.max_health)}")
         atp_text.set_text(f"ATP: {round(player.atp, 1)}/{int(player.max_atp)}")
-        sugar_text.set_text(f"Sugar: {round(player.sugar, 1)} (1 sugar -> {c.sugar_to_atp} ATP)")
+        sugar_text.set_text(f"Sugar: {round(player.sugar, 1)} (1 sugar -> {c.sugar_to_atp} ATP or {c.sugar_to_health} health)")
         health_progress_bar.set_progress(player.health / player.max_health)
         atp_progress_bar.set_progress(player.atp / player.max_atp)
 
