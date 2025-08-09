@@ -236,15 +236,15 @@ class UpgradeManager:
             #         "level": 5
             #     }
             # },
-            # # movement upgrades
+            # # movement upgrade
             # {
             #     "name": "Cilia",
             #     "icon": "cilia.png",
             #     "description": "Increases max speed",
-            #     "effect": [1.0, 1.5],
+            #     "effect": [1.0, 2.0],
             #     "target": "player_max_v",
             #     "pre_req": None
-            # },
+            # }
             # # combat upgrade
             {
                 "name": "Antibody",

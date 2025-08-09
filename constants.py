@@ -13,9 +13,9 @@ class Constants:
         self.max_upgrades = 3
 
         # movement parameters
+        self.antibody_speed = 100
         self.cycle_speed = 3
         self.player_accn = 25
-        
         self.player_drag = 0.05
         self.move_atp_cost = 0.01
 
@@ -36,12 +36,15 @@ class Constants:
         self.plankton_sugar = 5
         self.plankton_spikes = 20
 
+        self.antibody_damage = 10
+
     def init_colors(self):
         self.black = pg.Color("#000000")
         self.player_color = pg.Color("#1f51ff")
         self.bg_color = pg.Color("#222222")
         self.plankton_color = pg.Color("#4cd038")
         self.sugar_color = pg.Color("#eeeeee")
+        self.antibody_color = pg.Color("#ff0000")
 
     def set_screen(self, screen):
         self.screen = screen

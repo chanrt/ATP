@@ -2,6 +2,7 @@ from math import sqrt
 from os import path
 import pygame as pg
 
+from antibody import Antibody
 from constants import consts as c
 from enemy import Enemy
 from player import Player
@@ -12,16 +13,17 @@ from utils import *
 
 def game_loop():
     player = Player()
+    c.set_player(player)
     
+    antibodies = []
     enemies = []
+    sugar_molecules = []
+
     for _ in range(30):
         enemy_x = 2 * c.s_width * (random() - 0.5)
         enemy_y = 2 * c.s_height * (random() - 0.5)
         enemy_type = "plankton"
         enemies.append(Enemy(enemy_x, enemy_y, enemy_type))
-
-    sugar_molecules = []
-    c.set_player(player)
 
     health_text = Text(c.s_width // 4, c.stats_font_size // 2, f"Membrane", c.screen)
     health_text.set_font(pg.font.Font(path.join(path.dirname(__file__), "assets", "orbitron.ttf"), c.stats_font_size))
@@ -55,6 +57,14 @@ def game_loop():
                     player.heal()
                 if event.key == pg.K_SPACE:
                     player.exhaust_sugar()
+            if event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 1 and c.antibody and player.atp >= 1:
+                    dx = event.pos[0] - c.s_width // 2
+                    dy = c.s_height // 2 - event.pos[1]
+                    distance = sqrt(dx * dx + dy * dy)
+                    antibody = Antibody(player.x, player.y, dx / distance, dy / distance, "player")
+                    antibodies.append(antibody)
+                    player.atp -= 1
 
         keys_pressed = pg.key.get_pressed()
         cursor_states = {
@@ -67,10 +77,12 @@ def game_loop():
 
         # update entities
         player.update(enemies)
+        for antibody in antibodies:
+            antibody.update()
         for enemy in enemies:
             enemy.update()
 
-        # check for collisions
+        # check for player - enemy collisions
         enemy_collisions = check_collisions(player, enemies)
         for index, collision in enumerate(enemy_collisions):
             if collision:
@@ -81,15 +93,28 @@ def game_loop():
                 else:
                     player.kill()
 
+        # check for player - sugar collisions
         sugar_collisions = check_collisions(player, sugar_molecules)
         for index, collision in enumerate(sugar_collisions):
             if collision:
                 player.sugar += 1
                 sugar_molecules[index].picked_up = True
 
-        # remove dead enemies and picked up sugars
+        # check for antibody - enemy collisions
+        for antibody in antibodies:
+            antibody_collisions = check_collisions(antibody, enemies)
+            for index, collision in enumerate(antibody_collisions):
+                if collision:
+                    enemies[index].health -= c.antibody_damage
+                    antibody.outside_screen = True
+                    if enemies[index].health <= 0:
+                        sugar_molecules += sugar_spawner(enemies[index])
+                        enemies[index].is_alive = False
+
+        # remove dead enemies and picked up sugars and out of screen antibodies
         enemies = [enemy for enemy in enemies if enemy.is_alive]
         sugar_molecules = [sugar for sugar in sugar_molecules if not sugar.picked_up]
+        antibodies = [antibody for antibody in antibodies if not antibody.outside_screen]
 
         # update UI elements
         health_text.set_text(f"Membrane: {player.health}/{int(player.max_health)}")
@@ -101,6 +126,8 @@ def game_loop():
         c.screen.fill(c.bg_color)
 
         # render entities
+        for antibody in antibodies:
+            antibody.render()
         player.render()
         for sugar in sugar_molecules:
             sugar.render()
