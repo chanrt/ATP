@@ -3,13 +3,14 @@ import pygame as pg
 
 class Constants:
     def __init__(self):
-        self.fps = 30
+        self.fps = 60
         self.dt = 1.0 / self.fps
         self.time_stop = False
+        self.skip_update = False
 
         self.init_colors()
 
-        self.level_atps = [50 * i for i in range(1, 100)]
+        self.level_atps = [100 * i for i in range(1, 100)]
         self.max_upgrades = 3
         self.enemy_spawn_interval = 5000
 
@@ -34,6 +35,7 @@ class Constants:
         self.atp_req_multiplier = 1.0
         self.sugar_multiplier = 1.0
         self.contact_damage_multiplier = 1.0
+        self.antibody_damage_multiplier = 1.0
         self.sugar_synthesis_rate = 0
         self.respawn = 0
         self.chemotaxis = 0
@@ -48,6 +50,9 @@ class Constants:
         self.euglena_health = 80
         self.euglena_sugar = 30
         self.euglena_speed = 20
+        self.virus_health = 50
+        self.virus_sugar = 25
+        self.virus_shoot_speed = 0.05
 
         self.antibody_damage = 10
 
@@ -57,6 +62,7 @@ class Constants:
         self.bg_color = pg.Color("#222222")
         self.plankton_color = pg.Color("#4cd038")
         self.euglena_color = pg.Color("#880808")
+        self.virus_color = pg.Color("#00008B")
         self.sugar_color = pg.Color("#eeeeee")
         self.antibody_color = pg.Color("#ff0000")
 
@@ -83,7 +89,7 @@ class Constants:
     def set_player(self, player):
         self.player = player
 
-    def update_dt(self):
+    def update_dt(self, dt):
         if self.time_stop:
             self.time_stop = False
             self.dt = 0

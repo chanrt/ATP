@@ -168,12 +168,12 @@ class UpgradeManager:
                     "upgrade": "Plasma Membrane IV"
                 }
             },
-            # heal upgrades
+            # # heal upgrades
             # {
             #     "name": "Anabolism I",
             #     "icon": "anabolism.png",
             #     "description": "Increases health gain from sugar",
-            #     "effect": [1.0, 1.2],
+            #     "effect": [1.0, 1.5],
             #     "target": "sugar_to_health",
             #     "pre_req": None
             # },
@@ -181,7 +181,7 @@ class UpgradeManager:
             #     "name": "Anabolism II",
             #     "icon": "anabolism.png",
             #     "description": "Increases health gain from sugar",
-            #     "effect": [1.0, 1.2],
+            #     "effect": [1.5, 2.0],
             #     "target": "sugar_to_health",
             #     "pre_req": {
             #         "upgrade": "Anabolism I"
@@ -191,30 +191,10 @@ class UpgradeManager:
             #     "name": "Anabolism III",
             #     "icon": "anabolism.png",
             #     "description": "Increases health gain from sugar",
-            #     "effect": [1.0, 1.2],
+            #     "effect": [2.0, 2.5],
             #     "target": "sugar_to_health",
             #     "pre_req": {
             #         "upgrade": "Anabolism II"
-            #     }
-            # },
-            # {
-            #     "name": "Anabolism IV",
-            #     "icon": "anabolism.png",
-            #     "description": "Increases health gain from sugar",
-            #     "effect": [1.0, 1.2],
-            #     "target": "sugar_to_health",
-            #     "pre_req": {
-            #         "upgrade": "Anabolism III"
-            #     }
-            # },
-            # {
-            #     "name": "Anabolism V",
-            #     "icon": "anabolism.png",
-            #     "description": "Increases health gain from sugar",
-            #     "effect": [1.0, 1.2],
-            #     "target": "sugar_to_health",
-            #     "pre_req": {
-            #         "upgrade": "Anabolism IV"
             #     }
             # },
             # # energy yield upgrades
@@ -245,7 +225,7 @@ class UpgradeManager:
             #     "target": "player_max_v",
             #     "pre_req": None
             # },
-            # combat upgrade
+            # # combat upgrade
             # {
             #     "name": "Antibody",
             #     "icon": "antibody.png",
@@ -254,16 +234,16 @@ class UpgradeManager:
             #     "target": "antibody",
             #     "pre_req": None
             # },
-            {
-                "name": "Cytokine Storm",
-                "icon": "cytokine.png",
-                "description": "A storm that damages everything",
-                "effect": [0, 1],
-                "target": "storm",
-                "pre_req": {
-                    "level": 0
-                }
-            },
+            # {
+            #     "name": "Cytokine Storm",
+            #     "icon": "cytokine.png",
+            #     "description": "A storm that damages everything",
+            #     "effect": [0, 1],
+            #     "target": "storm",
+            #     "pre_req": {
+            #         "level": 5
+            #     }
+            # },
             # # defense upgrade
             # {
             #     "name": "Cytoskeleton",
@@ -273,6 +253,14 @@ class UpgradeManager:
             #     "target": "contact_damage_multiplier",
             #     "pre_req": None
             # },
+            {
+                "name": "Protein Coat",
+                "icon": "coat.png",
+                "description": "Reduce damage taken from antibodies",
+                "effect": [1.0, 0.5],
+                "target": "antibody_damage_multiplier",
+                "pre_req": None
+            },
             # # faster level-up upgrades
             # {
             #     "name": "DNA Polymerase",
@@ -302,16 +290,16 @@ class UpgradeManager:
             #     "pre_req": None
             # },
             # # sensing upgrade
-            {
-                "name": "Chemotaxis",
-                "icon": "chemotaxis.png",
-                "description": "Enemy directions are shown",
-                "effect": [0, 1],
-                "target": "chemotaxis",
-                "pre_req": {
-                    "level": 0
-                }
-            },
+            # {
+            #     "name": "Chemotaxis",
+            #     "icon": "chemotaxis.png",
+            #     "description": "Enemy directions are shown",
+            #     "effect": [0, 1],
+            #     "target": "chemotaxis",
+            #     "pre_req": {
+            #         "level": 5
+            #     }
+            # },
             # {
             #     "name": "Glycophilia",
             #     "icon": "glucose.png",
@@ -319,9 +307,9 @@ class UpgradeManager:
             #     "effect": [0, 1],
             #     "target": "glycophilia",
             #     "pre_req": {
-            #         "level": 0
+            #         "level": 5
             #     }
-            # }
+            # },
             # # respawn upgrade
             # {
             #     "name": "Plasmid",
@@ -330,7 +318,7 @@ class UpgradeManager:
             #     "effect": [0, 1],
             #     "target": "respawn",
             #     "pre_req": {
-            #         "level": 0
+            #         "level": 10
             #     }
             # },
         ]

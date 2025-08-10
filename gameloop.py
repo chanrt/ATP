@@ -1,10 +1,11 @@
 from math import sqrt
 from os import path
+from time import time
 import pygame as pg
 
 from antibody import Antibody
 from constants import consts as c
-from enemy import Enemy, EnemySpawner
+from enemy import EnemySpawner
 from player import Player
 from progress_bar import ProgressBar
 from sounds import sounds
@@ -23,7 +24,7 @@ def game_loop():
     storms = []
 
     enemy_spawner = EnemySpawner()
-    enemy_spawner.spawn(enemies, 1)
+    enemy_spawner.spawn(enemies, 50)
 
     health_text = Text(c.s_width // 4, c.stats_font_size // 2, f"Membrane", c.screen)
     health_text.set_font(pg.font.Font(path.join(path.dirname(__file__), "assets", "orbitron.ttf"), c.stats_font_size))
@@ -47,7 +48,7 @@ def game_loop():
     running = True
 
     while running:
-        clock.tick(c.fps)
+        start = time()
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -95,15 +96,18 @@ def game_loop():
         player.move(cursor_states)
 
         # update entities
-        player.update(enemies)
-        for antibody in antibodies:
-            antibody.update()
-        for sugar in sugar_molecules:
-            sugar.update()
-        for enemy in enemies:
-            enemy.update()
-        for storm in storms:
-            storm.update()
+        if c.skip_update:
+            c.skip_update = False
+        else:
+            player.update(enemies)
+            for antibody in antibodies:
+                antibody.update()
+            for sugar in sugar_molecules:
+                sugar.update()
+            for enemy in enemies:
+                enemy.update(antibodies)
+            for storm in storms:
+                storm.update()
 
         # check for player - enemy collisions
         enemy_collisions = check_collisions(player, enemies)
@@ -129,13 +133,23 @@ def game_loop():
         for antibody in antibodies:
             antibody_collisions = check_collisions(antibody, enemies)
             for index, collision in enumerate(antibody_collisions):
-                if collision:
+                if collision and antibody.source != "enemy":
                     enemies[index].health -= c.antibody_damage
                     antibody.outside_screen = True
                     sounds.hit.play()
                     if enemies[index].health <= 0:
                         sugar_molecules += sugar_spawner(enemies[index])
                         enemies[index].is_alive = False
+
+        # check for antibody - player collisions
+        antibody_collisions = check_collisions(player, antibodies)
+        for index, collision in enumerate(antibody_collisions):
+            if collision and antibodies[index].source != "player":
+                player.health -= c.antibody_damage * c.antibody_damage_multiplier
+                antibodies[index].outside_screen = True
+                sounds.hit.play()
+                if player.health <= 0:
+                    player.kill()
 
         # check for enemy - storm collisions
         for storm in storms:
@@ -153,7 +167,7 @@ def game_loop():
         storms = [storm for storm in storms if not storm.over]
 
         # update UI elements
-        health_text.set_text(f"Membrane: {player.health}/{int(player.max_health)}")
+        health_text.set_text(f"Membrane: {round(player.health, 1)}/{int(player.max_health)}")
         atp_text.set_text(f"ATP: {round(player.atp, 1)}/{int(player.max_atp)}")
         sugar_text.set_text(f"Sugar: {round(player.sugar, 1)} (1 sugar -> {c.sugar_to_atp} ATP or {c.sugar_to_health} health)")
         health_progress_bar.set_progress(player.health / player.max_health)
@@ -185,7 +199,8 @@ def game_loop():
             player.respired = False
 
         pg.display.flip()
-        c.update_dt()
+        end = time()
+        c.update_dt(end - start)
 
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 import pygame as pg
 
 from constants import consts as c
+from utils import distance_between
 
 
 class Antibody:
@@ -16,7 +17,7 @@ class Antibody:
         self.x += c.antibody_speed * self.dx * c.dt
         self.y += c.antibody_speed * self.dy * c.dt
 
-        if self.x < -c.s_width or self.x > 2 * c.s_width or self.y < -c.s_height or self.y > 2 * c.s_height:
+        if distance_between(self, c.player) > c.s_width:
             self.outside_screen = True
 
     def render(self):

@@ -23,7 +23,7 @@ class Player:
         self.health = self.max_health
         
         self.sugar = 5
-        self.atp = 49
+        self.atp = 99
         self.max_atp = c.level_atps[self.level - 1]
 
         # appearance
@@ -44,6 +44,7 @@ class Player:
             sounds.stop_bg_music()
             sounds.game_over.play()
             pg.time.wait(1500)
+            print("Cell killed")
             exit(0)
 
     def reload_properties(self):
@@ -86,6 +87,7 @@ class Player:
             self.atp = 0
             self.level += 1
             c.time_stop = True
+            c.skip_update = True
             upgrade_manager.show_upgrade_screen()
             sounds.evolve.play()
 

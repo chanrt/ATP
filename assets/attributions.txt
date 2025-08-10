@@ -27,3 +27,5 @@ molecule icon: https://www.flaticon.com/free-icon/molecule_109875
 cytokine storm icon: https://www.flaticon.com/free-icon/energy_520953
 
 glucose icon: https://www.flaticon.com/de/kostenloses-icon/glucose_9816500
+
+protein icon: https://www.flaticon.com/free-icon/protein_1951420

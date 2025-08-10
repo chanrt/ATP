@@ -5,6 +5,17 @@ from constants import consts as c
 from sugar import Sugar
 
 
+def distance_between(entity1, entity2):
+    return sqrt((entity1.x - entity2.x) ** 2 + (entity1.y - entity2.y) ** 2)
+
+
+def in_screen(entity):
+    x = c.s_width // 2 + entity.x - c.player.x
+    y = c.s_height // 2 - entity.y + c.player.y
+
+    return 0 < x < c.s_width and 0 < y < c.s_height
+
+
 def random_enemy_type(probs):
     intervals = []
     enemy_types = []
