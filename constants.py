@@ -32,9 +32,13 @@ class Constants:
         self.antibody = 0
         self.contact_damage_multiplier = 1.0
 
+        # enemy attributes
         self.plankton_health = 20
         self.plankton_sugar = 5
         self.plankton_spikes = 20
+        self.euglena_health = 80
+        self.euglena_sugar = 30
+        self.euglena_speed = 20
 
         self.antibody_damage = 10
 
@@ -43,6 +47,7 @@ class Constants:
         self.player_color = pg.Color("#1f51ff")
         self.bg_color = pg.Color("#222222")
         self.plankton_color = pg.Color("#4cd038")
+        self.euglena_color = pg.Color("#880808")
         self.sugar_color = pg.Color("#eeeeee")
         self.antibody_color = pg.Color("#ff0000")
 

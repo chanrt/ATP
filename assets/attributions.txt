@@ -1,3 +1,15 @@
+background music: royalty free music by Kevin MacLeod
+
+devour sound: mon_devour.mp3 by igroglaz -- https://freesound.org/s/592949/ -- License: Creative Commons 0
+
+upgrade sound: Upgrade 2 by NIKOS34 -- https://freesound.org/s/656396/ -- License: Creative Commons 0
+
+game over sound: Game_over.wav by deleted_user_877451 -- https://freesound.org/s/76376/ -- License: Attribution 3.0
+
+respawn sound: shield_respawn.wav by pepingrillin -- https://freesound.org/s/252079/ -- License: Creative Commons 0
+
+8 bit sounds from https://sfxr.me/
+
 lightning bolt icon: https://www.flaticon.com/free-icons/lightning-bolt
 
 plasma membrane icon: https://www.flaticon.com/free-icon/lightning-bolt_3872759

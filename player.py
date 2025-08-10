@@ -3,6 +3,7 @@ from math import pi, sin, sqrt
 import pygame as pg
 
 from constants import consts as c
+from sounds import sounds
 from upgrades import upgrade_manager
 
 
@@ -36,9 +37,13 @@ class Player:
     def kill(self):
         if c.respawn:
             c.respawn = 0
+            self.sugar = 5
+            sounds.respawn.play()
             self.reload_properties()
         else:
-            print("Cell killed")
+            sounds.stop_bg_music()
+            sounds.game_over.play()
+            pg.time.wait(1500)
             exit(0)
 
     def reload_properties(self):
@@ -74,11 +79,15 @@ class Player:
         self.sugar += c.sugar_synthesis_rate * c.dt
         self.cycle += c.cycle_speed * c.dt
 
+        if self.sugar < 1 and self.atp <= 0:
+            self.kill()
+
         if self.atp > self.max_atp:
             self.atp = 0
             self.level += 1
             c.time_stop = True
             upgrade_manager.show_upgrade_screen()
+            sounds.evolve.play()
 
         self.v = sqrt(self.vx * self.vx + self.vy * self.vy)
         if self.v < c.player_max_v:

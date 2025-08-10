@@ -7,6 +7,7 @@ from constants import consts as c
 from enemy import Enemy
 from player import Player
 from progress_bar import ProgressBar
+from sounds import sounds
 from text import Text
 from utils import *
 
@@ -22,7 +23,11 @@ def game_loop():
     for _ in range(30):
         enemy_x = 2 * c.s_width * (random() - 0.5)
         enemy_y = 2 * c.s_height * (random() - 0.5)
-        enemy_type = "plankton"
+
+        if random() < 0.2:
+            enemy_type = "euglena"
+        else:
+            enemy_type = "plankton"
         enemies.append(Enemy(enemy_x, enemy_y, enemy_type))
 
     health_text = Text(c.s_width // 4, c.stats_font_size // 2, f"Membrane", c.screen)
@@ -40,6 +45,7 @@ def game_loop():
     lightning_image = pg.image.load(path.join(path.dirname(__file__), "assets", "icons", "lightning_bolt.png"))
     lightning_image = pg.transform.scale(lightning_image, (100, 100))
 
+    sounds.play_bg_music()
     running = True
 
     while running:
@@ -58,13 +64,17 @@ def game_loop():
                 if event.key == pg.K_SPACE:
                     player.exhaust_sugar()
             if event.type == pg.MOUSEBUTTONDOWN:
-                if event.button == 1 and c.antibody and player.atp >= 1:
+                if event.button == 1 and c.antibody:
+                    if player.atp < 1 and player.sugar > 0:
+                        player.respire()
+                        
                     dx = event.pos[0] - c.s_width // 2
                     dy = c.s_height // 2 - event.pos[1]
                     distance = sqrt(dx * dx + dy * dy)
                     antibody = Antibody(player.x, player.y, dx / distance, dy / distance, "player")
                     antibodies.append(antibody)
                     player.atp -= 1
+                    sounds.shoot.play()
 
         keys_pressed = pg.key.get_pressed()
         cursor_states = {
@@ -89,8 +99,10 @@ def game_loop():
                 if enemies[index].health < player.health:
                     player.health -= enemies[index].health * c.contact_damage_multiplier
                     sugar_molecules += sugar_spawner(enemies[index])
+                    sounds.devour.play()
                     enemies[index].is_alive = False
                 else:
+                    enemies[index].health -= player.health
                     player.kill()
 
         # check for player - sugar collisions
@@ -107,6 +119,7 @@ def game_loop():
                 if collision:
                     enemies[index].health -= c.antibody_damage
                     antibody.outside_screen = True
+                    sounds.hit.play()
                     if enemies[index].health <= 0:
                         sugar_molecules += sugar_spawner(enemies[index])
                         enemies[index].is_alive = False

@@ -169,55 +169,55 @@ class UpgradeManager:
                 }
             },
             # heal upgrades
-            {
-                "name": "Anabolism I",
-                "icon": "anabolism.png",
-                "description": "Increases health gain from sugar",
-                "effect": [1.0, 1.2],
-                "target": "sugar_to_health",
-                "pre_req": None
-            },
-            {
-                "name": "Anabolism II",
-                "icon": "anabolism.png",
-                "description": "Increases health gain from sugar",
-                "effect": [1.0, 1.2],
-                "target": "sugar_to_health",
-                "pre_req": {
-                    "upgrade": "Anabolism I"
-                }
-            },
-            {
-                "name": "Anabolism III",
-                "icon": "anabolism.png",
-                "description": "Increases health gain from sugar",
-                "effect": [1.0, 1.2],
-                "target": "sugar_to_health",
-                "pre_req": {
-                    "upgrade": "Anabolism II"
-                }
-            },
-            {
-                "name": "Anabolism IV",
-                "icon": "anabolism.png",
-                "description": "Increases health gain from sugar",
-                "effect": [1.0, 1.2],
-                "target": "sugar_to_health",
-                "pre_req": {
-                    "upgrade": "Anabolism III"
-                }
-            },
-            {
-                "name": "Anabolism V",
-                "icon": "anabolism.png",
-                "description": "Increases health gain from sugar",
-                "effect": [1.0, 1.2],
-                "target": "sugar_to_health",
-                "pre_req": {
-                    "upgrade": "Anabolism IV"
-                }
-            },
-            # energy yield upgrades
+            # {
+            #     "name": "Anabolism I",
+            #     "icon": "anabolism.png",
+            #     "description": "Increases health gain from sugar",
+            #     "effect": [1.0, 1.2],
+            #     "target": "sugar_to_health",
+            #     "pre_req": None
+            # },
+            # {
+            #     "name": "Anabolism II",
+            #     "icon": "anabolism.png",
+            #     "description": "Increases health gain from sugar",
+            #     "effect": [1.0, 1.2],
+            #     "target": "sugar_to_health",
+            #     "pre_req": {
+            #         "upgrade": "Anabolism I"
+            #     }
+            # },
+            # {
+            #     "name": "Anabolism III",
+            #     "icon": "anabolism.png",
+            #     "description": "Increases health gain from sugar",
+            #     "effect": [1.0, 1.2],
+            #     "target": "sugar_to_health",
+            #     "pre_req": {
+            #         "upgrade": "Anabolism II"
+            #     }
+            # },
+            # {
+            #     "name": "Anabolism IV",
+            #     "icon": "anabolism.png",
+            #     "description": "Increases health gain from sugar",
+            #     "effect": [1.0, 1.2],
+            #     "target": "sugar_to_health",
+            #     "pre_req": {
+            #         "upgrade": "Anabolism III"
+            #     }
+            # },
+            # {
+            #     "name": "Anabolism V",
+            #     "icon": "anabolism.png",
+            #     "description": "Increases health gain from sugar",
+            #     "effect": [1.0, 1.2],
+            #     "target": "sugar_to_health",
+            #     "pre_req": {
+            #         "upgrade": "Anabolism IV"
+            #     }
+            # },
+            # # energy yield upgrades
             # {
             #     "name": "Krebs' Cycle",
             #     "icon": "mitochondria.png",
@@ -244,8 +244,8 @@ class UpgradeManager:
             #     "effect": [1.0, 2.0],
             #     "target": "player_max_v",
             #     "pre_req": None
-            # }
-            # # combat upgrade
+            # },
+            # combat upgrade
             {
                 "name": "Antibody",
                 "icon": "antibody.png",
@@ -254,7 +254,7 @@ class UpgradeManager:
                 "target": "antibody",
                 "pre_req": None
             },
-            # defense upgrade
+            # # defense upgrade
             # {
             #     "name": "Cytoskeleton",
             #     "icon": "cytoskeleton.png",
@@ -263,7 +263,7 @@ class UpgradeManager:
             #     "target": "contact_damage_multiplier",
             #     "pre_req": None
             # },
-            # faster level-up upgrades
+            # # faster level-up upgrades
             # {
             #     "name": "DNA Polymerase",
             #     "icon": "dna_polymerase.png",
@@ -303,16 +303,16 @@ class UpgradeManager:
             #     }
             # },
             # # respawn upgrade
-            # {
-            #     "name": "Plasmid",
-            #     "icon": "plasmid.png",
-            #     "description": "Respawn (once) after death",
-            #     "effect": [0, 1],
-            #     "target": "respawn",
-            #     "pre_req": {
-            #         "level": 0
-            #     }
-            # },
+            {
+                "name": "Plasmid",
+                "icon": "plasmid.png",
+                "description": "Respawn (once) after death",
+                "effect": [0, 1],
+                "target": "respawn",
+                "pre_req": {
+                    "level": 0
+                }
+            },
         ]
 
 
