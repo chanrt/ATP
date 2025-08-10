@@ -5,6 +5,22 @@ from constants import consts as c
 from sugar import Sugar
 
 
+def random_enemy_type(probs):
+    intervals = []
+    enemy_types = []
+
+    current_lower_limit = 0
+    for key in probs:
+        enemy_types.append(key)
+        intervals.append([current_lower_limit, current_lower_limit + probs[key]])
+        current_lower_limit += probs[key]
+
+    random_number = random()
+    for index, interval in enumerate(intervals):
+        if interval[0] < random_number < interval[1]:
+            return enemy_types[index]
+
+
 def check_collisions(player, entities):
     status = []
 

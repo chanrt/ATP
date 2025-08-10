@@ -4,7 +4,7 @@ import pygame as pg
 
 from antibody import Antibody
 from constants import consts as c
-from enemy import Enemy
+from enemy import Enemy, EnemySpawner
 from player import Player
 from progress_bar import ProgressBar
 from sounds import sounds
@@ -22,15 +22,8 @@ def game_loop():
     sugar_molecules = []
     storms = []
 
-    for _ in range(50):
-        enemy_x = 2 * c.s_width * (random() - 0.5)
-        enemy_y = 2 * c.s_height * (random() - 0.5)
-
-        if random() < 0:
-            enemy_type = "euglena"
-        else:
-            enemy_type = "plankton"
-        enemies.append(Enemy(enemy_x, enemy_y, enemy_type))
+    enemy_spawner = EnemySpawner()
+    enemy_spawner.spawn(enemies, 1)
 
     health_text = Text(c.s_width // 4, c.stats_font_size // 2, f"Membrane", c.screen)
     health_text.set_font(pg.font.Font(path.join(path.dirname(__file__), "assets", "orbitron.ttf"), c.stats_font_size))
@@ -47,6 +40,9 @@ def game_loop():
     lightning_image = pg.image.load(path.join(path.dirname(__file__), "assets", "icons", "lightning_bolt.png"))
     lightning_image = pg.transform.scale(lightning_image, (100, 100))
 
+    spawn_enemy = pg.USEREVENT + 1
+    pg.time.set_timer(spawn_enemy, c.enemy_spawn_interval)
+
     sounds.play_bg_music()
     running = True
 
@@ -56,6 +52,7 @@ def game_loop():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
+
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     running = False
@@ -65,6 +62,7 @@ def game_loop():
                     player.heal()
                 if event.key == pg.K_SPACE:
                     player.exhaust_sugar()
+
             if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 1 and c.antibody:
                     if player.atp < 1 and player.sugar > 0:
@@ -83,6 +81,9 @@ def game_loop():
                         new_storm = Storm(player.x, player.y)
                         storms.append(new_storm)
                         sounds.storm.play()
+            
+            if event.type == spawn_enemy:
+                enemy_spawner.spawn(enemies, 1)
 
         keys_pressed = pg.key.get_pressed()
         cursor_states = {

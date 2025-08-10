@@ -3,6 +3,7 @@ from random import random
 import pygame as pg
 
 from constants import consts as c
+from utils import random_enemy_type
 
 
 class Enemy:
@@ -66,3 +67,45 @@ class Enemy:
                 self.minor_axis,)
             
             pg.draw.ellipse(c.screen, self.color, rect)
+
+
+class EnemySpawner:
+    def __init__(self):
+        pass
+
+    def spawn(self, enemies, number=1):
+        euglena_prob = c.player.level * 0.03
+        plankton_prob = 1 - euglena_prob
+
+        probs = {
+            "plankton": plankton_prob,
+            "euglena": euglena_prob
+        }
+        enemy_type = random_enemy_type(probs)
+
+        if number > 1:
+            # spawn that many enemies around the player as long as they're not too close
+            for _ in range(number):
+                while True:
+                    x = 2 * c.s_width * (random() - 0.5)
+                    y = 2 * c.s_height * (random() - 0.5)
+
+                    if sqrt((x - c.player.x) ** 2 + (y - c.player.y) ** 2) < c.exclusion_radius:
+                        continue
+                    else:
+                        new_enemy = Enemy(x, y, enemy_type)
+                        enemies.append(new_enemy)
+                        break
+        else:
+            # spawn an enemy around the player but not immediately visible on the screen
+            while True:
+                x = c.player.x + 2 * c.s_width * (random() - 0.5)
+                y = c.player.y + 2 * c.s_height * (random() - 0.5)
+
+                if c.player.x - c.s_width // 2 < x < c.player.x + c.s_width // 2:
+                    if c.player.y - c.s_height // 2 < y < c.player.y + c.s_height // 2:
+                        continue
+                else:
+                    new_enemy = Enemy(x, y, enemy_type)
+                    enemies.append(new_enemy)
+                    break

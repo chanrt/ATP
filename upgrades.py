@@ -302,26 +302,26 @@ class UpgradeManager:
             #     "pre_req": None
             # },
             # # sensing upgrade
-            # {
-            #     "name": "Chemotaxis",
-            #     "icon": "chemotaxis.png",
-            #     "description": "Enemy directions are shown",
-            #     "effect": [0, 1],
-            #     "target": "chemotaxis",
-            #     "pre_req": {
-            #         "level": 0
-            #     }
-            # },
             {
-                "name": "Glycophilia",
-                "icon": "glucose.png",
-                "description": "Attract sugar",
+                "name": "Chemotaxis",
+                "icon": "chemotaxis.png",
+                "description": "Enemy directions are shown",
                 "effect": [0, 1],
-                "target": "glycophilia",
+                "target": "chemotaxis",
                 "pre_req": {
                     "level": 0
                 }
-            }
+            },
+            # {
+            #     "name": "Glycophilia",
+            #     "icon": "glucose.png",
+            #     "description": "Attract sugar",
+            #     "effect": [0, 1],
+            #     "target": "glycophilia",
+            #     "pre_req": {
+            #         "level": 0
+            #     }
+            # }
             # # respawn upgrade
             # {
             #     "name": "Plasmid",

@@ -11,6 +11,7 @@ class Constants:
 
         self.level_atps = [50 * i for i in range(1, 100)]
         self.max_upgrades = 3
+        self.enemy_spawn_interval = 5000
 
         # movement parameters
         self.antibody_speed = 100
@@ -69,6 +70,7 @@ class Constants:
         
         self.sugar_radius = self.s_height // 200
         self.splash_radius = self.s_height // 50
+        self.exclusion_radius = self.s_height // 4
 
         self.title_font_size = self.s_height // 15
         self.stats_font_size = self.title_font_size // 2

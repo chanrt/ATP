@@ -175,7 +175,7 @@ class Player:
                 end_x = c.s_width // 2 + 2 * self.radius * direction[0]
                 end_y = c.s_height // 2 + 2 * self.radius * direction[1]
 
-                thickness = min(int(1000. / distance), 1)
+                thickness = max(int(2000. / distance), 1)
 
                 pg.draw.line(c.screen, c.sugar_color, (start_x, start_y), (end_x, end_y), thickness)
 
