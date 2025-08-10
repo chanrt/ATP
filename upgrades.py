@@ -77,7 +77,7 @@ class UpgradeManager:
         upgrades = self.get_random_upgrades()
         upgrade_x = linspace(0, c.s_width, len(upgrades) + 2)[1:-1]
 
-        title_text = Text(c.s_width // 2, c.s_height // 8, f"Level {c.player.level}", c.screen)
+        title_text = Text(c.s_width // 2, c.s_height // 8, f"Generation {c.player.level}", c.screen)
         title_text.set_font(pg.font.Font(path.join(path.dirname(__file__), "assets", "orbitron.ttf"), c.title_font_size))
 
         self.text_elements = [title_text]
@@ -246,13 +246,23 @@ class UpgradeManager:
             #     "pre_req": None
             # },
             # combat upgrade
+            # {
+            #     "name": "Antibody",
+            #     "icon": "antibody.png",
+            #     "description": "Hit enemies from a distance",
+            #     "effect": [0, 1],
+            #     "target": "antibody",
+            #     "pre_req": None
+            # },
             {
-                "name": "Antibody",
-                "icon": "antibody.png",
-                "description": "Hit enemies from a distance",
+                "name": "Cytokine Storm",
+                "icon": "cytokine.png",
+                "description": "A storm that damages everything",
                 "effect": [0, 1],
-                "target": "antibody",
-                "pre_req": None
+                "target": "storm",
+                "pre_req": {
+                    "level": 0
+                }
             },
             # # defense upgrade
             # {
@@ -302,17 +312,27 @@ class UpgradeManager:
             #         "level": 0
             #     }
             # },
-            # # respawn upgrade
             {
-                "name": "Plasmid",
-                "icon": "plasmid.png",
-                "description": "Respawn (once) after death",
+                "name": "Glycophilia",
+                "icon": "glucose.png",
+                "description": "Attract sugar",
                 "effect": [0, 1],
-                "target": "respawn",
+                "target": "glycophilia",
                 "pre_req": {
                     "level": 0
                 }
-            },
+            }
+            # # respawn upgrade
+            # {
+            #     "name": "Plasmid",
+            #     "icon": "plasmid.png",
+            #     "description": "Respawn (once) after death",
+            #     "effect": [0, 1],
+            #     "target": "respawn",
+            #     "pre_req": {
+            #         "level": 0
+            #     }
+            # },
         ]
 
 

@@ -23,7 +23,7 @@ class Player:
         self.health = self.max_health
         
         self.sugar = 5
-        self.atp = 99
+        self.atp = 49
         self.max_atp = c.level_atps[self.level - 1]
 
         # appearance

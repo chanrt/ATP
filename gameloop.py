@@ -8,6 +8,7 @@ from enemy import Enemy
 from player import Player
 from progress_bar import ProgressBar
 from sounds import sounds
+from storm import Storm
 from text import Text
 from utils import *
 
@@ -19,12 +20,13 @@ def game_loop():
     antibodies = []
     enemies = []
     sugar_molecules = []
+    storms = []
 
-    for _ in range(30):
+    for _ in range(50):
         enemy_x = 2 * c.s_width * (random() - 0.5)
         enemy_y = 2 * c.s_height * (random() - 0.5)
 
-        if random() < 0.2:
+        if random() < 0:
             enemy_type = "euglena"
         else:
             enemy_type = "plankton"
@@ -67,7 +69,7 @@ def game_loop():
                 if event.button == 1 and c.antibody:
                     if player.atp < 1 and player.sugar > 0:
                         player.respire()
-                        
+
                     dx = event.pos[0] - c.s_width // 2
                     dy = c.s_height // 2 - event.pos[1]
                     distance = sqrt(dx * dx + dy * dy)
@@ -75,6 +77,12 @@ def game_loop():
                     antibodies.append(antibody)
                     player.atp -= 1
                     sounds.shoot.play()
+                if event.button == 3 and c.storm:
+                    if player.atp >= c.storm_cost:
+                        player.atp -= c.storm_cost
+                        new_storm = Storm(player.x, player.y)
+                        storms.append(new_storm)
+                        sounds.storm.play()
 
         keys_pressed = pg.key.get_pressed()
         cursor_states = {
@@ -89,8 +97,12 @@ def game_loop():
         player.update(enemies)
         for antibody in antibodies:
             antibody.update()
+        for sugar in sugar_molecules:
+            sugar.update()
         for enemy in enemies:
             enemy.update()
+        for storm in storms:
+            storm.update()
 
         # check for player - enemy collisions
         enemy_collisions = check_collisions(player, enemies)
@@ -124,10 +136,20 @@ def game_loop():
                         sugar_molecules += sugar_spawner(enemies[index])
                         enemies[index].is_alive = False
 
+        # check for enemy - storm collisions
+        for storm in storms:
+            for index, enemy in enumerate(enemies):
+                if sqrt((enemy.x - storm.x) ** 2 + (enemy.y - storm.y) ** 2) < storm.radius:
+                    enemies[index].health -= c.storm_damage * c.dt
+                    if enemies[index].health <= 0:
+                        sugar_molecules += sugar_spawner(enemies[index])
+                        enemies[index].is_alive = False
+
         # remove dead enemies and picked up sugars and out of screen antibodies
         enemies = [enemy for enemy in enemies if enemy.is_alive]
         sugar_molecules = [sugar for sugar in sugar_molecules if not sugar.picked_up]
         antibodies = [antibody for antibody in antibodies if not antibody.outside_screen]
+        storms = [storm for storm in storms if not storm.over]
 
         # update UI elements
         health_text.set_text(f"Membrane: {player.health}/{int(player.max_health)}")
@@ -141,6 +163,8 @@ def game_loop():
         # render entities
         for antibody in antibodies:
             antibody.render()
+        for storm in storms:
+            storm.render()
         player.render()
         for sugar in sugar_molecules:
             sugar.render()

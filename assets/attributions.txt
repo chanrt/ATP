@@ -23,3 +23,7 @@ chemotaxis icon: https://www.flaticon.com/free-icon/chemical-sensor_11298781
 antibody icon: https://www.flaticon.com/free-icon/antibody_5219034
 
 molecule icon: https://www.flaticon.com/free-icon/molecule_109875
+
+cytokine storm icon: https://www.flaticon.com/free-icon/energy_520953
+
+glucose icon: https://www.flaticon.com/de/kostenloses-icon/glucose_9816500

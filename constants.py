@@ -9,7 +9,7 @@ class Constants:
 
         self.init_colors()
 
-        self.level_atps = [100, 200, 300, 400, 500]
+        self.level_atps = [50 * i for i in range(1, 100)]
         self.max_upgrades = 3
 
         # movement parameters
@@ -18,19 +18,27 @@ class Constants:
         self.player_accn = 25
         self.player_drag = 0.05
         self.move_atp_cost = 0.01
+        self.sugar_attract_speed = 50
+
+        # storm parameters
+        self.storm_speed = 200
+        self.storm_damage = 10
+        self.storm_cost = 5
 
         # parameters subject to upgrades
         self.player_max_health = 100
         self.player_max_v = 100
         self.sugar_to_health = 10
         self.sugar_to_atp = 5
-        self.sugar_synthesis_rate = 0
         self.atp_req_multiplier = 1.0
         self.sugar_multiplier = 1.0
+        self.contact_damage_multiplier = 1.0
+        self.sugar_synthesis_rate = 0
         self.respawn = 0
         self.chemotaxis = 0
         self.antibody = 0
-        self.contact_damage_multiplier = 1.0
+        self.storm = 0
+        self.glycophilia = 0
 
         # enemy attributes
         self.plankton_health = 20
@@ -64,6 +72,8 @@ class Constants:
 
         self.title_font_size = self.s_height // 15
         self.stats_font_size = self.title_font_size // 2
+
+        self.storm_limit = self.s_width // 2
 
     def set_clock(self, clock):
         self.clock = clock

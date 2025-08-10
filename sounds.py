@@ -13,6 +13,7 @@ class Sounds:
         self.hit = self.load_sound("hit.wav")
         self.game_over = self.load_sound("game_over.wav")
         self.respawn = self.load_sound("respawn.wav")
+        self.storm = self.load_sound("storm.wav")
 
     def load_sound(self, name):
         return pg.mixer.Sound(path.join(path.dirname(__file__), "assets", "sounds", name))
