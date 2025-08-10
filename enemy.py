@@ -100,7 +100,7 @@ class EnemySpawner:
     def spawn(self, enemies, number=1):
         virus_prob = c.player.level * 0.02
         euglena_prob = c.player.level * 0.03
-        plankton_prob = 1 - euglena_prob - virus_prob
+        plankton_prob = max(1 - euglena_prob - virus_prob, 0)
 
         probs = {
             "plankton": plankton_prob,

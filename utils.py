@@ -30,6 +30,18 @@ def random_enemy_type(probs):
     for index, interval in enumerate(intervals):
         if interval[0] < random_number < interval[1]:
             return enemy_types[index]
+        
+
+def normalize(probs):
+    norm = 0
+    for key in probs:
+        norm += probs[key] ** 2
+
+    for key in probs:
+        probs[key] = probs[key] // norm
+
+    print(probs)
+    return probs
 
 
 def check_collisions(player, entities):

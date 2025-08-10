@@ -89,7 +89,6 @@ class Player:
             c.time_stop = True
             c.skip_update = True
             upgrade_manager.show_upgrade_screen()
-            sounds.evolve.play()
 
         self.v = sqrt(self.vx * self.vx + self.vy * self.vy)
         if self.v < c.player_max_v:

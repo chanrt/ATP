@@ -25,7 +25,7 @@ class Constants:
         # storm parameters
         self.storm_speed = 200
         self.storm_damage = 10
-        self.storm_cost = 5
+        self.storm_cost = 20
 
         # parameters subject to upgrades
         self.player_max_health = 100
@@ -69,7 +69,6 @@ class Constants:
     def set_screen(self, screen):
         self.screen = screen
         self.s_width, self.s_height = pg.display.get_surface().get_size()
-        print("Screen dimensions:", self.s_width, self.s_height)
 
         self.radii_multiplier = self.s_height // 100
         self.ellipse_wiggle = self.s_height // 100

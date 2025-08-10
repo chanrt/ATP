@@ -1,0 +1,10 @@
+You are a primitive uncellular organism in a constantly evolving world. Your task is to devour other cells, intake their sugar, use your energy (ATP) wisely, and evolve new abilities to survive.
+
+Controls:
+WASD -> Movement
+Esc -> Quit
+Q -> Convert sugar to ATP
+E -> Convert sugar to membrane health
+Space -> Convert all sugar to ATP until upgrade
+Left click -> Shoot antibody
+Right click -> Release cytokine storm
